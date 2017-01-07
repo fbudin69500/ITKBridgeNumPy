@@ -58,6 +58,30 @@ class TestNumpyITKMemoryviewInterface(unittest.TestCase):
 
         self.assertEqual(0, diff)
 
+    def test_TransposeNumPyBridge_itkScalarImage(self):
+        "Try to convert all pixel types to NumPy array view, transpose it, and convert it back"
+
+        Dimension             = 2
+        ScalarImageType       = itk.Image[itk.UC, Dimension]
+        RegionType            = itk.ImageRegion[Dimension]
+
+        region                = RegionType()
+        size                  = itk.Size[2]()
+        size[0]               = 30
+        size[1]               = 20
+        region.SetSize(size);
+
+        scalarImage           = ScalarImageType.New()
+        scalarImage.SetRegions(region);
+        scalarImage.Allocate();
+
+        scalarndarr           = itk.PyBuffer[ScalarImageType].GetArrayFromImage(scalarImage)
+        convertedScalarImage  = itk.PyBuffer[ScalarImageType].GetImageFromArray(scalarndarr.transpose())
+
+        transposedImageSize = convertedScalarImage.GetLargestPossibleRegion().GetSize()
+        self.assertEqual(transposedImageSize[0], size[1])
+        self.assertEqual(transposedImageSize[1], size[0])
+
     def test_NumPyBridge_itkVectorImage(self):
         "Try to convert all pixel types to NumPy array view"
 

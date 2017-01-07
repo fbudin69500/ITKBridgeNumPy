@@ -91,10 +91,23 @@ PyBuffer<TImage>
 
   size_t                      pixelSize     = sizeof(ComponentType);
   size_t                      len           = 1;
-
-  if(PyObject_GetBuffer(arr, &pyBuffer, PyBUF_CONTIG) == -1)
+  if(PyObject_GetBuffer(arr, &pyBuffer, PyBUF_ANY_CONTIGUOUS | PyBUF_WRITABLE) == -1)
     {
     PyErr_SetString( PyExc_RuntimeError, "Cannot get an instance of NumPy array." );
+    PyBuffer_Release(&pyBuffer);
+    return NULL;
+    }
+  PyBuffer_Release(&pyBuffer);
+  // Making sure that the buffer that is passed is C ordered
+  PyObject * view = PyMemoryView_GetContiguous(arr, PyBUF_SHADOW, 'C');
+  if(view == NULL)
+    {
+    PyErr_SetString( PyExc_RuntimeError,  "Error creating contiguous memoryView with data that is C ordered" );
+    return NULL;
+    }
+  if(PyObject_GetBuffer(view, &pyBuffer, PyBUF_FULL) == -1)
+    {
+    PyErr_SetString( PyExc_RuntimeError, "Cannot get an instance of NumPy array on the view." );
     PyBuffer_Release(&pyBuffer);
     return NULL;
     }
@@ -156,7 +169,6 @@ PyBuffer<TImage>
   output->DisconnectPipeline();
 
   PyBuffer_Release(&pyBuffer);
-
   return output;
 }
 
