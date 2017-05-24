@@ -23,6 +23,10 @@ def _get_numpy_pixelid(itk_Image_type):
                "F":numpy.float32,
                "D":numpy.float64,
                 }
+    import os
+    if os.name == 'nt':
+        _np_itk['UL'] = numpy.uint32
+        _np_itk['SL'] = numpy.int32
     try:
         return _np_itk[itk_Image_type]
     except KeyError as e:
