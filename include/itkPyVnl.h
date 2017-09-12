@@ -36,9 +36,10 @@ namespace itk
  *
  *  \brief Helper class get views of VNL data buffers in python arrays and back.
  *
- *  This class will receive a VNL data structure and create the equivalent python
- *  array view. This permits passing VNL data structures into python arrays from
- *  the NumPy python package.
+ *  This class will either receive a VNL data structure and create the equivalent
+ *  Python array view or will receive a Python array and create a copy of it in a
+ *  VNL data structure. This permits passing VNL data structures into python arrays
+ *  from the NumPy python package.
  *
  *  \ingroup BridgeNumPy
  */
@@ -62,7 +63,7 @@ public:
   /**
    * Get a vnl vector from a Python array
    */
-  static const VectorType _GetVnlVectorViewFromArray( PyObject *arr, PyObject *shape);
+  static const VectorType _GetVnlVectorFromArray( PyObject *arr, PyObject *shape);
 
   /**
    * Get an Array with the content of the vnl matrix
@@ -72,7 +73,7 @@ public:
   /**
    * Get a vnl matrix from a Python array
    */
-  static const MatrixType _GetVnlMatrixViewFromArray( PyObject *arr, PyObject *shape);
+  static const MatrixType _GetVnlMatrixFromArray( PyObject *arr, PyObject *shape);
 
 
 protected:
