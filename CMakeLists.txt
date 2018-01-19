@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.9.5)
 project(BridgeNumPy)
 
 set(BridgeNumPy_SYSTEM_INCLUDE_DIRS "${PYTHON_INCLUDE_DIR}")
