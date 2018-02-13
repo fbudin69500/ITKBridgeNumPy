@@ -64,7 +64,7 @@ public:
   typedef typename DefaultConvertPixelTraits<PixelType>::ComponentType ComponentType;
 
    /** Image dimension. */
-  itkStaticConstMacro(ImageDimension, unsigned int, ImageType::ImageDimension);
+  static constexpr unsigned int ImageDimension = ImageType::ImageDimension;
 
   typedef typename Image< ComponentType, ImageDimension >::Pointer  OutputImagePointer;
 
