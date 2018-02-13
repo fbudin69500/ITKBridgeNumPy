@@ -154,7 +154,7 @@ PyBuffer<TImage>
   SpacingType spacing;
   spacing.Fill( 1.0 );
 
-  typedef ImportImageFilter< ComponentType, ImageDimension > ImporterType;
+  using ImporterType = ImportImageFilter< ComponentType, ImageDimension >;
   typename ImporterType::Pointer importer = ImporterType::New();
   importer->SetRegion( region );
   importer->SetOrigin( origin );
